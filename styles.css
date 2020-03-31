@@ -1,0 +1,142 @@
+body {
+    background-color: #ffffff;
+    font-family: 'Abril Fatface', cursive;
+    margin: auto;
+}
+
+h1 {
+    color: #08ffc8;
+    text-align: center;
+    font-size: 50px;
+}
+
+h2, h4 {
+    position: relative;
+    text-align: left;
+    padding: 5px;
+    color: #204969;
+}
+
+hr {
+    border-top: 2px groove #08ffc8;
+    margin-top: 0px;
+}
+
+.heading {
+    position: relative;
+    margin: auto;
+    padding: 40px;
+    background-color: #204969;
+}
+
+
+.carousel-inner {
+    position: relative;
+    padding-bottom: 35px;
+
+}
+
+.container {
+    width: 100%;
+    margin: auto;
+    position: relative;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}
+
+.main {
+    margin: auto;
+    position: relative;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.card-header {
+    text-align: center;
+    font-family: 'Abril Fatface', cursive;
+    background-color: 	#e4e4e4;
+    color:#204969;
+    font-size: 35px;
+}
+
+.card {
+    font-family: 'Kalam', cursive;
+    font-size: 20px;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    outline-style: 2px groove;
+}
+
+.sideCol {
+    padding-right: 6rem;
+    text-align: left;
+    font-size: 18px;
+}
+
+.img-thumbnail {
+    height: auto;
+    width: 100%;
+    position: relative;
+    left: 0px;
+    padding: 5px;
+    border-radius: 5px;
+    outline-style: 2px groove;
+}
+
+.btn {
+    border-color: #204969;
+    color:  #204969;
+    background-color: 	#e4e4e4;
+    border-radius: 100%;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.listStyle {
+    position: relative;
+    margin: auto;
+    margin-top: 0px;
+}
+
+.complete {
+    text-decoration-line: line-through;
+}
+
+.footer {
+    position: fixed;
+    background-color:  #204969; 
+    height: 30px;
+    width: 100%;
+    bottom: 0;
+}
+
+#inputTask {
+    width: 100%;
+    font-family: 'Kalam', cursive;
+    font-size: 18;
+    padding-left: 10px;
+    padding-top: 4px;
+    border-radius: 5px;
+}
+
+#icon {
+    background-color: #204969;
+    margin: 10px;
+    position: relative;
+}
+
+#arrow {
+    background-color:  #204969;    
+    border-radius: 100%;
+    background-size: 10px;
+    padding: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    position: relative;    
+}
