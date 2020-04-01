@@ -5,135 +5,142 @@ document.addEventListener("DOMContentLoaded", function() {
   var tomorrowUL = document.getElementById("tomorrow");
   var upcomingUL = document.getElementById("upcoming");
   var removeBtns = document.querySelectorAll("button.remove");
-  var dateID; 
+  var dateID;
 
+  //  local storage arrays
+const todayArr = JSON.parse(localStorage.getItem("todayArr")) || [];
+const tomorrowArr = JSON.parse(localStorage.getItem("tomorrowArr")) || [];
+const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
 
-//  local storage arrays
-    const todayArr = [];
-    const tomorrowArr = [];
-    const upcomingArr = [];
+ for (todayTodo of todayArr) {
+    appendListItem(todayTodo, todayUL);
+  }
+
+  for (tommorowTodo of tomorrowArr) {
+    appendListItem(tommorowTodo, tomorrowUL);
+  }
+
+  for (upcomingTodo of upcomingArr) {
+    appendListItem(upcomingTodo, upcomingUL);
+  }
+
 
 // new to-do event listener
 
-    submitTask.addEventListener("click", function(e){
-        e.preventDefault();
-        getNewToDo()
+  submitTask.addEventListener("click", function (e) {
+    e.preventDefault();
+    getNewToDo()
+  });
+
+  // new to-do event listener
+
+  submitTask.addEventListener("click", function(e) {
+    e.preventDefault();
+    getNewToDo();
+  });
+
+  // radio event listener for new to-do date
+
+  for (radio of radios) {
+    radio.addEventListener("click", function(e) {
+      e.preventDefault;
+      dateID = e.target.value;
     });
+  }
 
-// radio event listener for new to-do date
+  // new to-do text value generated from submitTask event
 
-    for (radio of radios) {
-        radio.addEventListener("click", function(e) {
-            e.preventDefault;
-            dateID = e.target.value; 
-        });
-    }
+  function getNewToDo() {
+    var toDoText = document.getElementById("inputTask").value;
+    createToDo(toDoText);
+  }
 
-// new to-do text value generated from submitTask event
+  // create a new to-do item
 
-    function getNewToDo() {
-        var toDoText = document.getElementById("inputTask").value;
-        console.log("getNewToDo")
-        createToDo(toDoText)
-    }
-
-
-// create a new to-do item 
-
-    function createToDo(taskString) {
-    if (dateID === 'today') {
-        todayArr.push(taskString);
-        appendListItem(taskString, todayUL)
-        saveData('todayArr', taskString);
-    } else if (dateID === 'tomorrow') {
-        tomorrowArr.push(taskString);
-        appendListItem(taskString, tomorrowUL)
-        saveData('tomorrowArr', taskString);
-    } else if (dateID === 'upcoming') {
-        upcomingArr.push(upcomingArr)
-        appendListItem(taskString, upcomingUL)
-        saveData('upcomingArr', taskString);
+  function createToDo(taskString) {
+    if (dateID === "today") {
+      todayArr.push(taskString);
+      appendListItem(taskString, todayUL);
+      saveData("todayArr", JSON.stringify(todayArr));
+    } else if (dateID === "tomorrow") {
+      tomorrowArr.push(taskString);
+      appendListItem(taskString, tomorrowUL);
+      saveData("tomorrowArr", JSON.stringify(tomorrowArr));
+    } else if (dateID === "upcoming") {
+      upcomingArr.push(upcomingArr);
+      appendListItem(taskString, upcomingUL);
+      saveData("upcomingArr", JSON.stringify(upcomingArr));
     } else {
-        alert('missing date')
+      alert("missing date");
     }
-    }
+  }
 
-// create list item w/ val - append to list
+  // create list item w/ val - append to list
 
-    function appendListItem (txtStr, UL) {
+  function appendListItem(txtStr, UL) {
+    let newToDo = document.createElement("li");
+    addEventListenerToDo(newToDo);
+    newToDo.innerText = txtStr;
+    newToDo.classList.add("list-group-item");
+    UL.append(newToDo);
+  }
 
-        let newToDo = document.createElement("li");
-        addEventListenerToDo(newToDo)
-        newToDo.innerText = txtStr;
-        newToDo.classList.add("list-group-item");
-        UL.append(newToDo)
-    }
+  // add event listener to every task to enable them to be marked as complete
 
+  function addEventListenerToDo(item) {
+    item.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.target.classList.add("complete");
+      return item;
+    });
+  }
 
-// add event listener to every task to enable them to be marked as complete
+  // push string into array, save to local storage *************
 
-    function addEventListenerToDo(item) {
-        item.addEventListener("click", function(e) {
-            e.preventDefault();
-            e.target.classList.add("complete");
-            return item
-        })
-    }
+  function saveData(key, arr) {
+    localStorage.setItem(key, arr);
+  }
 
+  // add event listener to delete button to delete a to-do item
 
-// push string into array, save to local storage *************
+  for (removeBtn of removeBtns) {
+    removeBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      console.log("clicked");
+      var listDate = e.target.id;
+      console.log(listDate);
+      removeTaskFromCurrent(listDate);
+    });
+  }
 
-    function saveData(key, arr) {
-        localStorage.setItem(key, JSON.stringify(arr));
-    }
-
-
-// add event listener to delete button to delete a to-do item
-
-    for (removeBtn of removeBtns) {
-        removeBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            console.log("clicked")
-            var listDate = e.target.id
-            console.log(listDate);
-            removeTaskFromCurrent(listDate);
-        });
-    }
-
-
-// to mark a task as complete - will be used by removerBtn
+  // to mark a task as complete - will be used by removerBtn
 
   function removeTaskFromCurrent(removeDate) {
-        var selectedToRemoveArr
-        var localStorageArr 
+    var selectedToRemoveArr;
+    var localStorageArr;
 
-         if (removeDate === "todayDeleteBtn") {
-           selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
-           console.log(selectedToRemoveArr);
-           localStorageArr = todayArr;
-         } else if (removeDate === "tomorrowDeleteBtn") {
-           selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
-           localStorageArr = tomorrowArr;
-         } else if (removeDate === "upcomingDeleteBtn") {
-           selectedToRemoveArr = document.querySelectorAll("li.complete");
-           localStorageArr = upcomingArr;
-         }
-        
+    if (removeDate === "todayDeleteBtn") {
+      selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
+      console.log(selectedToRemoveArr);
+      localStorageArr = todayArr;
+    } else if (removeDate === "tomorrowDeleteBtn") {
+      selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
+      localStorageArr = tomorrowArr;
+    } else if (removeDate === "upcomingDeleteBtn") {
+      selectedToRemoveArr = document.querySelectorAll("li.complete");
+      localStorageArr = upcomingArr;
+    }
 
-        
-        for (var i = 0; i < localStorageArr.length; i++) {
-          for (var j = 0; j < selectedToRemoveArr.length; j++) {
-            if (selectedToRemoveArr[i] === localStorageArr[j]) {
-              localStorageArr.splice(i, 1);
-              selectedToRemoveArr[i].remove();
-              continue;
-            }
-          }
+    for (var i = 0; i < localStorageArr.length; i++) {
+      for (var j = 0; j < selectedToRemoveArr.length; j++) {
+        if (selectedToRemoveArr[i] === localStorageArr[j]) {
+          localStorageArr.splice(i, 1);
+          selectedToRemoveArr[i].remove();
+          continue;
         }
-        
-        saveData (
-          "localStorageArr",
-          localStorageArr       
-        );
-    }    
-})
+      }
+    }
+
+    saveData("localStorageArr", localStorageArr);
+  }
+});
