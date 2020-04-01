@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // push string into array, save to local storage *************
 
     function saveData(key, arr) {
-        localStorage.setItem(key, arr);
+        localStorage.setItem(key, JSON.stringify(arr));
     }
 
 
@@ -104,35 +104,36 @@ document.addEventListener("DOMContentLoaded", function() {
 // to mark a task as complete - will be used by removerBtn
 
   function removeTaskFromCurrent(removeDate) {
-        var selectedToRemveArr
+        var selectedToRemoveArr
         var localStorageArr 
 
          if (removeDate === "todayDeleteBtn") {
-            selectedToRemveArr = todayUL.querySelectorAll("li.complete");
-            console.log(selectedToRemveArr);
+            selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
+            console.log(selectedToRemoveArr);
             localStorageArr = todayArr;
          } else if (removeDate === "tomorrowDeleteBtn") {
-            selectedToRemveArr = tomorrowUL.querySelectorAll("li.complete");
+            selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
             localStorageArr = tomorrowArr;
         } else if (removeDate === "upcomingDeleteBtn") {
-            selectedToRemveArr = document.querySelectorAll("li.complete");
+            selectedToRemoveArr = document.querySelectorAll("li.complete");
             localStorageArr = upcomingArr;
 
         }
-    
-        for (var i = 0; i < selectedToRemveArr.length; i++) {
-          selectedToRemveArr[i].remove();
-          continue;
-        }
-        updateLocalStorage(
-          "localStorageArr",
-          localStorageArr,
-          selectedToRemveArr
-        );
-    }
 
-    // replace old array with new array after the deleted to-do is removed from array
-    function updateLocalStorage(key, arr) {
-      saveData(key, arr);
-    }
+    
+        for (var i = 0; i < selectedToRemoveArr.length; i++) {     
+            for (var j = 0; j < localStorageArr; j++) {
+                if (selectedToRemoveArr[i] === localStorageArr[j]) {
+                    localStorageArr.splice(i, 1)
+                    selectedToRemoveArr[i].remove();
+                    continue
+                }
+            }
+        }
+        
+        saveData (
+          "localStorageArr",
+          localStorageArr       
+        );
+    }    
 })
