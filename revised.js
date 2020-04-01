@@ -32,13 +32,6 @@ const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
     getNewToDo()
   });
 
-  // new to-do event listener
-
-  submitTask.addEventListener("click", function(e) {
-    e.preventDefault();
-    getNewToDo();
-  });
-
   // radio event listener for new to-do date
 
   for (radio of radios) {
