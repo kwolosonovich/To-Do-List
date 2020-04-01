@@ -108,27 +108,30 @@ document.addEventListener("DOMContentLoaded", function() {
         var localStorageArr 
 
          if (removeDate === "todayDeleteBtn") {
-            selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
-            console.log(selectedToRemoveArr);
-            localStorageArr = todayArr;
+           selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
+           console.log(selectedToRemoveArr);
+           localStorageArr = todayArr;
          } else if (removeDate === "tomorrowDeleteBtn") {
-            selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
-            localStorageArr = tomorrowArr;
-        } else if (removeDate === "upcomingDeleteBtn") {
-            selectedToRemoveArr = document.querySelectorAll("li.complete");
-            localStorageArr = upcomingArr;
+           selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
+           localStorageArr = tomorrowArr;
+         } else if (removeDate === "upcomingDeleteBtn") {
+           selectedToRemoveArr = document.querySelectorAll("li.complete");
+           localStorageArr = upcomingArr;
+         }
+        
 
-        }
+        
 
     
-        for (var i = 0; i < selectedToRemoveArr.length; i++) {     
-            for (var j = 0; j < localStorageArr; j++) {
-                if (selectedToRemoveArr[i] === localStorageArr[j]) {
-                    localStorageArr.splice(i, 1)
-                    selectedToRemoveArr[i].remove();
-                    continue
-                }
+        for (var i = 0; i < localStorageArr.length; i++) {
+            var localStorageString = JSON.parse(localStorage.getItem(localStorageArr[i]));
+          for (var j = 0; j < selectedToRemoveArr.length; j++) {
+            if (selectedToRemoveArr[i] === localStorageString[j]) {
+              localStorageArr.splice(i, 1);
+              selectedToRemoveArr[i].remove();
+              continue;
             }
+          }
         }
         
         saveData (
