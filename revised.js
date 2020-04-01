@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", function() {
   var tomorrowUL = document.getElementById("tomorrow");
   var upcomingUL = document.getElementById("upcoming");
   var removeBtns = document.querySelectorAll("button.remove");
-  var dateID;
+  var dateID; 
+
 
 //  local storage arrays
     const todayArr = [];
@@ -15,26 +16,18 @@ document.addEventListener("DOMContentLoaded", function() {
 // new to-do event listener
 
     submitTask.addEventListener("click", function(e){
-        e.preventDefault;
+        e.preventDefault();
         getNewToDo()
     });
 
 // radio event listener for new to-do date
 
-
     for (radio of radios) {
         radio.addEventListener("click", function(e) {
             e.preventDefault;
-            dateID = e.target.value;  
+            dateID = e.target.value; 
         });
     }
-
-// get new to-do date value
-
-    // function getDate(e) {
-    //     console.log(e)
-    //     dateID = e.target.value;
-    // }
 
 // new to-do text value generated from submitTask event
 
@@ -51,15 +44,15 @@ document.addEventListener("DOMContentLoaded", function() {
     if (dateID === 'today') {
         todayArr.push(taskString);
         appendListItem(taskString, todayUL)
-        saveData('todayArr', todayArr, taskString);
+        saveData('todayArr', taskString);
     } else if (dateID === 'tomorrow') {
         tomorrowArr.push(taskString);
         appendListItem(taskString, tomorrowUL)
-        saveData('tomorrowArr', tomorrowArr, taskString);
+        saveData('tomorrowArr', taskString);
     } else if (dateID === 'upcoming') {
         upcomingArr.push(upcomingArr)
         appendListItem(taskString, upcomingUL)
-        saveData('upcomingArr', upcomingArr, taskString);
+        saveData('upcomingArr', taskString);
     } else {
         alert('missing date')
     }
@@ -70,23 +63,25 @@ document.addEventListener("DOMContentLoaded", function() {
     function appendListItem (txtStr, UL) {
 
         let newToDo = document.createElement("li");
-        addEventListenertoToDo(newTodo)
+        addEventListenerToDo(newToDo)
         newToDo.innerText = txtStr;
+        newToDo.classList.add("list-group-item");
         UL.append(newToDo)
     }
 
 
 // add event listener to every task to enable them to be marked as complete
 
-    function addEventListenertoToDo(item) {
+    function addEventListenerToDo(item) {
         item.addEventListener("click", function(e) {
-            e.preventDefault;
+            e.preventDefault();
+            e.target.classList.add("complete");
             return item
         })
     }
 
 
-// push string into array, save to local storage
+// push string into array, save to local storage *************
 
     function saveData(key, arr) {
         localStorage.setItem(key, arr);
@@ -97,8 +92,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     for (removeBtn of removeBtns) {
         removeBtn.addEventListener("click", function(e) {
-            e.preventDefault;
-            var listDate = e.target.id // code to get ID is not correct
+            e.preventDefault();
+            console.log("clicked")
+            var listDate = e.target.id
+            console.log(listDate);
             removeTaskFromCurrent(listDate);
         });
     }
@@ -111,13 +108,14 @@ document.addEventListener("DOMContentLoaded", function() {
         var localStorageArr 
 
          if (removeDate === "todayDeleteBtn") {
-            selectedToRemveArr = document.getElementsByClassName("today.complete");
+            selectedToRemveArr = todayUL.querySelectorAll("li.complete");
+            console.log(selectedToRemveArr);
             localStorageArr = todayArr;
          } else if (removeDate === "tomorrowDeleteBtn") {
-            selectedToRemveArr = document.getElementsByClassName("tomorrow.complete");
+            selectedToRemveArr = tomorrowUL.querySelectorAll("li.complete");
             localStorageArr = tomorrowArr;
         } else if (removeDate === "upcomingDeleteBtn") {
-            selectedToRemveArr = document.getElementsByClassName("upcoming.complete");
+            selectedToRemveArr = document.querySelectorAll("li.complete");
             localStorageArr = upcomingArr;
 
         }
@@ -126,11 +124,15 @@ document.addEventListener("DOMContentLoaded", function() {
           selectedToRemveArr[i].remove();
           continue;
         }
-        deleteFromStorage(selectedToRemveArr, localStorageArr);
+        updateLocalStorage(
+          "localStorageArr",
+          localStorageArr,
+          selectedToRemveArr
+        );
     }
 
     // replace old array with new array after the deleted to-do is removed from array
-    function deleteFromStorage () {
-        saveData(key, arr)
+    function updateLocalStorage(key, arr) {
+      saveData(key, arr);
     }
 })
