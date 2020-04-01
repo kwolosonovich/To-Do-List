@@ -121,12 +121,9 @@ document.addEventListener("DOMContentLoaded", function() {
         
 
         
-
-    
         for (var i = 0; i < localStorageArr.length; i++) {
-            var localStorageString = JSON.parse(localStorage.getItem(localStorageArr[i]));
           for (var j = 0; j < selectedToRemoveArr.length; j++) {
-            if (selectedToRemoveArr[i] === localStorageString[j]) {
+            if (selectedToRemoveArr[i] === localStorageArr[j]) {
               localStorageArr.splice(i, 1);
               selectedToRemoveArr[i].remove();
               continue;
