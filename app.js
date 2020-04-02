@@ -5,17 +5,18 @@ document.addEventListener("DOMContentLoaded", function() {
   var tomorrowUL = document.getElementById("tomorrow");
   var upcomingUL = document.getElementById("upcoming");
   var removeBtns = document.querySelectorAll("button.remove");
-
-  console.log(localStorage);
   var newToDoObj = {
     dateID: undefined,
     text: undefined
   };
 
   //  local storage arrays
+
   const todayArr = JSON.parse(localStorage.getItem("todayArr")) || [];
   const tomorrowArr = JSON.parse(localStorage.getItem("tomorrowArr")) || [];
   const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
+
+  // add todos on page load/reload
 
   for (todayTodo of todayArr) {
     appendListItem(todayTodo, todayUL);
@@ -97,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function() {
     removeBtn.addEventListener("click", function(e) {
       e.preventDefault();
       var listDate = e.target.id;
-      //   console.log("test");
       removeTaskFromCurrent(listDate);
     });
   }
@@ -106,36 +106,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function removeTaskFromCurrent(removeDate) {
     var selectedToRemoveArr;
-    var localStorageArr;
-    // console.log(removeDate)
 
     if (removeDate === "todayDeleteBtn") {
       selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
-      console.log(selectedToRemoveArr);
-      console.log("before");
-      console.log(todayArr);
       selectedToRemoveArr[0].remove();
       itemIndex = todayArr.indexOf(selectedToRemoveArr[0].innerText);
       todayArr.splice(itemIndex, 1);
-      //   localStorageArr = todayArr;
       saveData("todayArr", JSON.stringify(todayArr));
-
-      // console.log("after")
-      // console.log(localStorageArr)
     } else if (removeDate === "tomorrowDeleteBtn") {
       selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
       selectedToRemoveArr[0].remove();
       itemIndex = tomorrowArr.indexOf(selectedToRemoveArr[0].innerText);
       tomorrowArr.splice(itemIndex, 1);
-      localStorageArr = tomorrowArr;
-      saveData("localStorageArr", JSON.stringify(localStorageArr));
+      saveData("tomorrowArr", JSON.stringify(tomorrowArr));
     } else if (removeDate === "upcomingDeleteBtn") {
       selectedToRemoveArr = upcoming.querySelectorAll("li.complete");
       selectedToRemoveArr[0].remove();
       itemIndex = upcomingArr.indexOf(selectedToRemoveArr[0].innerText);
       upcomingArr.splice(itemIndex, 1);
-      localStorageArr = upcomingArr;
-      saveData("localStorageArr", JSON.stringify(localStorageArr));
+      saveData("upcomingArr", JSON.stringify(upcomingArr));
     }
   }
 
