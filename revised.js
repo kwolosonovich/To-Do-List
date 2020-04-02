@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   //  local storage arrays
-  const todayArr = JSON.parse(localStorage.getItem("todayArr")) || [];
+  const todayArr = JSON.parse(localStorage.getItem("localStorageArr")) || [];
   const tomorrowArr = JSON.parse(localStorage.getItem("tomorrowArr")) || [];
   const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
 
@@ -113,17 +113,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (removeDate === "todayDeleteBtn") {
       selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
-      //   console.log(selectedToRemoveArr);
-      //   console.log("before")
-      //   console.log(todayArr)
+        console.log(selectedToRemoveArr);
+        console.log("before")
+        console.log(todayArr)
       selectedToRemoveArr[0].remove();
       itemIndex = todayArr.indexOf(selectedToRemoveArr[0].innerText);
       todayArr.splice(itemIndex, 1);
       localStorageArr = todayArr;
       saveData("localStorageArr", JSON.stringify(localStorageArr));
 
-      //   console.log("after")
-      //   console.log(todayArr)
+        console.log("after")
+        console.log(localStorageArr)
     } else if (removeDate === "tomorrowDeleteBtn") {
       selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
       selectedToRemoveArr[0].remove();
