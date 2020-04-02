@@ -5,31 +5,40 @@ document.addEventListener("DOMContentLoaded", function() {
   var tomorrowUL = document.getElementById("tomorrow");
   var upcomingUL = document.getElementById("upcoming");
   var removeBtns = document.querySelectorAll("button.remove");
-  var dateID;
+
+
+  console.log(localStorage)
+  var newToDoObj = {
+      dateID: undefined, 
+      text: undefined,
+  };
 
   //  local storage arrays
-const todayArr = JSON.parse(localStorage.getItem("todayArr")) || [];
-const tomorrowArr = JSON.parse(localStorage.getItem("tomorrowArr")) || [];
-const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
+  const todayArr = JSON.parse(localStorage.getItem("todayArr")) || [];
+  const tomorrowArr = JSON.parse(localStorage.getItem("tomorrowArr")) || [];
+  const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
 
- for (todayTodo of todayArr) {
-    appendListItem(todayTodo, todayUL);
-  }
+  
 
-  for (tommorowTodo of tomorrowArr) {
-    appendListItem(tommorowTodo, tomorrowUL);
-  }
+    for (todayTodo of todayArr) {
+        if (todayTodo.classList)
+        appendListItem(todayTodo, todayUL);
+    }
 
-  for (upcomingTodo of upcomingArr) {
-    appendListItem(upcomingTodo, upcomingUL);
-  }
+    for (tommorowTodo of tomorrowArr) {
+        appendListItem(tommorowTodo, tomorrowUL);
+    }
+
+    for (upcomingTodo of upcomingArr) {
+        appendListItem(upcomingTodo, upcomingUL);
+    }
 
 
-// new to-do event listener
+  // new to-do event listener
 
-  submitTask.addEventListener("click", function (e) {
+  submitTask.addEventListener("click", function(e) {
     e.preventDefault();
-    getNewToDo()
+    getNewToDo();
   });
 
   // radio event listener for new to-do date
@@ -37,31 +46,34 @@ const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
   for (radio of radios) {
     radio.addEventListener("click", function(e) {
       e.preventDefault;
-      dateID = e.target.value;
+      newToDoObj.dateID = e.target.value;
     });
   }
 
   // new to-do text value generated from submitTask event
 
   function getNewToDo() {
-    var toDoText = document.getElementById("inputTask").value;
-    createToDo(toDoText);
+    newToDoObj.text = document.getElementById("inputTask").value;
+    createToDo();
   }
 
   // create a new to-do item
 
-  function createToDo(taskString) {
-    if (dateID === "today") {
-      todayArr.push(taskString);
-      appendListItem(taskString, todayUL);
+  function createToDo() {
+    if (newToDoObj.dateID === "today") {
+      todayArr.push(newToDoObj.text);
+    //   console.log("todayArr")
+    //   console.log(todayArr)
+      appendListItem(newToDoObj.text, todayUL);
       saveData("todayArr", JSON.stringify(todayArr));
-    } else if (dateID === "tomorrow") {
-      tomorrowArr.push(taskString);
-      appendListItem(taskString, tomorrowUL);
+
+    } else if (newToDoObj.dateID === "tomorrow") {
+      tomorrowArr.push(newToDoObj.text);
+      appendListItem(newToDoObj.text, tomorrowUL);
       saveData("tomorrowArr", JSON.stringify(tomorrowArr));
-    } else if (dateID === "upcoming") {
-      upcomingArr.push(upcomingArr);
-      appendListItem(taskString, upcomingUL);
+    } else if (newToDoObj.dateID === "upcoming") {
+      upcomingArr.push(newToDoObj.text);
+      appendListItem(newToDoObj.text, upcomingUL);
       saveData("upcomingArr", JSON.stringify(upcomingArr));
     } else {
       alert("missing date");
@@ -70,28 +82,21 @@ const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
 
   // create list item w/ val - append to list
 
-  function appendListItem(txtStr, UL) {
+  function appendListItem(str, UL) {
     let newToDo = document.createElement("li");
-    addEventListenerToDo(newToDo);
-    newToDo.innerText = txtStr;
+    newToDo.innerText = str;
     newToDo.classList.add("list-group-item");
     UL.append(newToDo);
+    addEventListenerToDo(newToDo);
   }
 
   // add event listener to every task to enable them to be marked as complete
 
-  function addEventListenerToDo(item) {
-    item.addEventListener("click", function(e) {
+  function addEventListenerToDo(newToDoLiEL) {
+    newToDoLiEL.addEventListener("click", function(e) {
       e.preventDefault();
       e.target.classList.add("complete");
-      return item;
     });
-  }
-
-  // push string into array, save to local storage *************
-
-  function saveData(key, arr) {
-    localStorage.setItem(key, arr);
   }
 
   // add event listener to delete button to delete a to-do item
@@ -99,9 +104,8 @@ const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
   for (removeBtn of removeBtns) {
     removeBtn.addEventListener("click", function(e) {
       e.preventDefault();
-      console.log("clicked");
       var listDate = e.target.id;
-      console.log(listDate);
+    //   console.log("test");
       removeTaskFromCurrent(listDate);
     });
   }
@@ -111,29 +115,50 @@ const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
   function removeTaskFromCurrent(removeDate) {
     var selectedToRemoveArr;
     var localStorageArr;
+    // console.log(removeDate)
 
+   
     if (removeDate === "todayDeleteBtn") {
       selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
-      console.log(selectedToRemoveArr);
+    //   console.log(selectedToRemoveArr);
+      console.log("before")
+     console.log(todayArr)
+      itemIndex = todayArr.indexOf(selectedToRemoveArr[0].innerText)
+      todayArr.splice(itemIndex, 1)
       localStorageArr = todayArr;
+      console.log("after")
+      console.log(todayArr)
     } else if (removeDate === "tomorrowDeleteBtn") {
       selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
       localStorageArr = tomorrowArr;
     } else if (removeDate === "upcomingDeleteBtn") {
-      selectedToRemoveArr = document.querySelectorAll("li.complete");
+      selectedToRemoveArr = upcoming.querySelectorAll("li.complete");
       localStorageArr = upcomingArr;
+    }
+
+    for (var i = 0; i < selectedToRemoveArr.length; i++) {
+        selectedToRemoveArr[i].classList.add("delete");
+        selectedToRemoveArr[i].remove();
+
     }
 
     for (var i = 0; i < localStorageArr.length; i++) {
       for (var j = 0; j < selectedToRemoveArr.length; j++) {
         if (selectedToRemoveArr[i] === localStorageArr[j]) {
-          localStorageArr.splice(i, 1);
-          selectedToRemoveArr[i].remove();
+            
+            selectedToRemoveArr[i].remove();
           continue;
         }
       }
     }
 
     saveData("localStorageArr", localStorageArr);
+  }
+
+  //  save array to local storage
+
+  function saveData(key, arr) {
+    //   console.log("called")
+    localStorage.setItem(key, arr);
   }
 });
