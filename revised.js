@@ -6,11 +6,10 @@ document.addEventListener("DOMContentLoaded", function() {
   var upcomingUL = document.getElementById("upcoming");
   var removeBtns = document.querySelectorAll("button.remove");
 
-
-  console.log(localStorage)
+  console.log(localStorage);
   var newToDoObj = {
-      dateID: undefined, 
-      text: undefined,
+    dateID: undefined,
+    text: undefined
   };
 
   //  local storage arrays
@@ -18,21 +17,17 @@ document.addEventListener("DOMContentLoaded", function() {
   const tomorrowArr = JSON.parse(localStorage.getItem("tomorrowArr")) || [];
   const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
 
-  
+  for (todayTodo of todayArr) {
+    if (todayTodo.classList) appendListItem(todayTodo, todayUL);
+  }
 
-    for (todayTodo of todayArr) {
-        if (todayTodo.classList)
-        appendListItem(todayTodo, todayUL);
-    }
+  for (tommorowTodo of tomorrowArr) {
+    appendListItem(tommorowTodo, tomorrowUL);
+  }
 
-    for (tommorowTodo of tomorrowArr) {
-        appendListItem(tommorowTodo, tomorrowUL);
-    }
-
-    for (upcomingTodo of upcomingArr) {
-        appendListItem(upcomingTodo, upcomingUL);
-    }
-
+  for (upcomingTodo of upcomingArr) {
+    appendListItem(upcomingTodo, upcomingUL);
+  }
 
   // new to-do event listener
 
@@ -62,11 +57,10 @@ document.addEventListener("DOMContentLoaded", function() {
   function createToDo() {
     if (newToDoObj.dateID === "today") {
       todayArr.push(newToDoObj.text);
-    //   console.log("todayArr")
-    //   console.log(todayArr)
+      //   console.log("todayArr")
+      //   console.log(todayArr)
       appendListItem(newToDoObj.text, todayUL);
       saveData("todayArr", JSON.stringify(todayArr));
-
     } else if (newToDoObj.dateID === "tomorrow") {
       tomorrowArr.push(newToDoObj.text);
       appendListItem(newToDoObj.text, tomorrowUL);
@@ -105,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
     removeBtn.addEventListener("click", function(e) {
       e.preventDefault();
       var listDate = e.target.id;
-    //   console.log("test");
+      //   console.log("test");
       removeTaskFromCurrent(listDate);
     });
   }
@@ -117,42 +111,53 @@ document.addEventListener("DOMContentLoaded", function() {
     var localStorageArr;
     // console.log(removeDate)
 
-   
     if (removeDate === "todayDeleteBtn") {
       selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
-    //   console.log(selectedToRemoveArr);
-      console.log("before")
-     console.log(todayArr)
-      itemIndex = todayArr.indexOf(selectedToRemoveArr[0].innerText)
-      todayArr.splice(itemIndex, 1)
+      //   console.log(selectedToRemoveArr);
+      //   console.log("before")
+      //   console.log(todayArr)
+      selectedToRemoveArr[0].remove();
+      itemIndex = todayArr.indexOf(selectedToRemoveArr[0].innerText);
+      todayArr.splice(itemIndex, 1);
       localStorageArr = todayArr;
-      console.log("after")
-      console.log(todayArr)
+      saveData("localStorageArr", JSON.stringify(localStorageArr));
+
+      //   console.log("after")
+      //   console.log(todayArr)
     } else if (removeDate === "tomorrowDeleteBtn") {
       selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
+      selectedToRemoveArr[0].remove();
+      itemIndex = tomorrowArr.indexOf(selectedToRemoveArr[0].innerText);
+      tomorrowArr.splice(itemIndex, 1);
       localStorageArr = tomorrowArr;
+      saveData("localStorageArr", JSON.stringify(localStorageArr));
     } else if (removeDate === "upcomingDeleteBtn") {
-      selectedToRemoveArr = upcoming.querySelectorAll("li.complete");
+      selectedToRemoveArr = upcoming.querySelectorAll("li.complete");  
+      selectedToRemoveArr[0].remove();
+      itemIndex = upcomingArr.indexOf(selectedToRemoveArr[0].innerText);
+      upcomingArr.splice(itemIndex, 1);
       localStorageArr = upcomingArr;
+      saveData("localStorageArr", JSON.stringify(localStorageArr));
     }
 
-    for (var i = 0; i < selectedToRemoveArr.length; i++) {
-        selectedToRemoveArr[i].classList.add("delete");
-        selectedToRemoveArr[i].remove();
+    // for (var i = 0; i < selectedToRemoveArr.length; i++) {
+    //     selectedToRemoveArr[i].classList.add("delete");
+    //     selectedToRemoveArr[i].remove();
 
-    }
+    // }
 
-    for (var i = 0; i < localStorageArr.length; i++) {
-      for (var j = 0; j < selectedToRemoveArr.length; j++) {
-        if (selectedToRemoveArr[i] === localStorageArr[j]) {
-            
-            selectedToRemoveArr[i].remove();
-          continue;
-        }
-      }
-    }
+    //     for ()
+    // for (var i = 0; i < localStorageArr.length; i++) {
+    //   for (var j = 0; j < selectedToRemoveArr.length; j++) {
+    //     if (selectedToRemoveArr[i] === localStorageArr[j]) {
 
-    saveData("localStorageArr", localStorageArr);
+    //         selectedToRemoveArr[i].remove();
+    //       continue;
+    //     }
+    //   }
+    // }
+
+    // saveData("localStorageArr", JSON.stringify(localStorageArr));
   }
 
   //  save array to local storage
