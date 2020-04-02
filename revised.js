@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   //  local storage arrays
-  const todayArr = JSON.parse(localStorage.getItem("localStorageArr")) || [];
+  const todayArr = JSON.parse(localStorage.getItem("todayArr")) || [];
   const tomorrowArr = JSON.parse(localStorage.getItem("tomorrowArr")) || [];
   const upcomingArr = JSON.parse(localStorage.getItem("upcomingArr")) || [];
 
   for (todayTodo of todayArr) {
-    if (todayTodo.classList) appendListItem(todayTodo, todayUL);
+    appendListItem(todayTodo, todayUL);
   }
 
   for (tommorowTodo of tomorrowArr) {
@@ -57,8 +57,6 @@ document.addEventListener("DOMContentLoaded", function() {
   function createToDo() {
     if (newToDoObj.dateID === "today") {
       todayArr.push(newToDoObj.text);
-      //   console.log("todayArr")
-      //   console.log(todayArr)
       appendListItem(newToDoObj.text, todayUL);
       saveData("todayArr", JSON.stringify(todayArr));
     } else if (newToDoObj.dateID === "tomorrow") {
@@ -113,17 +111,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (removeDate === "todayDeleteBtn") {
       selectedToRemoveArr = todayUL.querySelectorAll("li.complete");
-        console.log(selectedToRemoveArr);
-        console.log("before")
-        console.log(todayArr)
+      console.log(selectedToRemoveArr);
+      console.log("before");
+      console.log(todayArr);
       selectedToRemoveArr[0].remove();
       itemIndex = todayArr.indexOf(selectedToRemoveArr[0].innerText);
       todayArr.splice(itemIndex, 1);
-      localStorageArr = todayArr;
-      saveData("localStorageArr", JSON.stringify(localStorageArr));
+      //   localStorageArr = todayArr;
+      saveData("todayArr", JSON.stringify(todayArr));
 
-        console.log("after")
-        console.log(localStorageArr)
+      // console.log("after")
+      // console.log(localStorageArr)
     } else if (removeDate === "tomorrowDeleteBtn") {
       selectedToRemoveArr = tomorrowUL.querySelectorAll("li.complete");
       selectedToRemoveArr[0].remove();
@@ -132,38 +130,18 @@ document.addEventListener("DOMContentLoaded", function() {
       localStorageArr = tomorrowArr;
       saveData("localStorageArr", JSON.stringify(localStorageArr));
     } else if (removeDate === "upcomingDeleteBtn") {
-      selectedToRemoveArr = upcoming.querySelectorAll("li.complete");  
+      selectedToRemoveArr = upcoming.querySelectorAll("li.complete");
       selectedToRemoveArr[0].remove();
       itemIndex = upcomingArr.indexOf(selectedToRemoveArr[0].innerText);
       upcomingArr.splice(itemIndex, 1);
       localStorageArr = upcomingArr;
       saveData("localStorageArr", JSON.stringify(localStorageArr));
     }
-
-    // for (var i = 0; i < selectedToRemoveArr.length; i++) {
-    //     selectedToRemoveArr[i].classList.add("delete");
-    //     selectedToRemoveArr[i].remove();
-
-    // }
-
-    //     for ()
-    // for (var i = 0; i < localStorageArr.length; i++) {
-    //   for (var j = 0; j < selectedToRemoveArr.length; j++) {
-    //     if (selectedToRemoveArr[i] === localStorageArr[j]) {
-
-    //         selectedToRemoveArr[i].remove();
-    //       continue;
-    //     }
-    //   }
-    // }
-
-    // saveData("localStorageArr", JSON.stringify(localStorageArr));
   }
 
   //  save array to local storage
 
   function saveData(key, arr) {
-    //   console.log("called")
     localStorage.setItem(key, arr);
   }
 });
